@@ -4,6 +4,7 @@
 
 # USAGE
 # python3 excel_2_csv_041018_1.py "FOLDERWITHEXCEL"
+# python3 excel_2_csv_041018_1.py "../tests/testExcelSheets"
 
 import os,sys,csv,openpyxl
 
@@ -37,22 +38,22 @@ def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
 	if not os.path.exists('output_csv_f'):
 		os.makedirs('output_csv_f')
 
-	# create the CSV filename from Excel filename and sheet title
-	# filenames of CSV should be `<excel filename>_<sheet title>.csv`
-	# csv_filename_is = filename + "_" + sheetItem.title + ".csv"
-	csv_filename_is = "./output_csv_f/" + filename + "_" + sheetItem.title + ".csv" # this version puts the final file in the `output_csv_f` folder
-	logging.debug('csv filename to use:  %s' % (csv_filename_is))
-	# create csv.writer object for this CSV file
-	output_csv_is = open(csv_filename_is,'w',newline='')
-	logging.debug('output_csv_is created')
-	outputWriter = csv.writer(output_csv_is)
-	logging.debug('outputWriter ready')
-	
 	# get the sheet data from the Excel file
 	sheetData = excelFile[sheetItem] # where "excelFile" is the workbook, where "sheetItem" is a string, the name of the sheet
 	logging.debug('sheetData is:  ')
 	logging.debug(sheetData)
 
+	# create the CSV filename from Excel filename and sheet title
+	# filenames of CSV should be `<excel filename>_<sheet title>.csv`
+	# csv_filename_is = filename + "_" + sheetItem.title + ".csv"
+	csv_filename_is = str(filename) + "_" + str(sheetData.title) + ".csv" # this version puts the final file in the `output_csv_f` folder
+	logging.debug('csv filename to use:  %s' % (csv_filename_is))
+	# create csv.writer object for this CSV file
+	output_csv_is = open(os.path.join("output_csv_f/",csv_filename_is),'w',newline='')
+	logging.debug('output_csv_is created')
+	outputWriter = csv.writer(output_csv_is)
+	logging.debug('outputWriter ready')
+	
 	# loop through every row in the sheet data
 	for rowNum in range(1,sheetData.max_row + 1):
 		rowData = [] # append each cell to this list
@@ -76,10 +77,12 @@ def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
 
 for file in os.listdir(input_folder):
 	# check that file is an Excel file
-	if endswith('xlsx'):
+	if file.endswith('xlsx'):
+		# create correct file path to open
+		filename_path = os.path.join(input_folder,file)
 		# read the file
 		logging.debug('Opening file:  %s' % (file))
-		excelFile = openpyxl.load_workbook(file)
+		excelFile = openpyxl.load_workbook(filename_path) # this has to open the `filename_path` not `file`
 		logging.debug('File opened.')
 		
 		# create list of sheet names to target
