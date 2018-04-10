@@ -6,9 +6,8 @@ This program lets you convert hundreds of Excel files to CSVs, to avoid hours of
 
 ### Test Data
 
-	../tests/excelSpreadsheets.zip
+	../tests/testExcelSheets
 
-unzip the file and use the directory
+the test Excel files are in that folder
 
-	../tests/excelSpreadsheets.zip%20Folder
 
