@@ -42,7 +42,7 @@ def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
 	# if the folder doesn't exist, create it
 	if not os.path.exists('output_csv_f'):
 		os.makedirs('output_csv_f')
-	
+
 	# create the CSV filename from Excel filename and sheet title
 	# filenames of CSV should be `<excel filename>_<sheet title>.csv`
 	csv_filename_is = str(filename) + "_" + str(sheetData.title) + ".csv" # this version puts the final file in the `output_csv_f` folder
@@ -81,7 +81,7 @@ for file in os.listdir(input_folder):
 		filename_path = os.path.join(input_folder,file)
 		# read the file
 		logging.debug('Opening file:  %s' % (file))
-		excelFile = openpyxl.load_workbook(filename_path) # this has to open the `filename_path` not `file`
+		excelFile = openpyxl.load_workbook(filename_path,data_only=True) # this has to open the `filename_path` not `file`, use `data_only=True` to get values not formulae
 		logging.debug('File opened.')
 		
 		# create list of sheet names to target
