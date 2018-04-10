@@ -33,19 +33,18 @@ logging.debug('The input folder targeted is:  %s' % (input_folder))
 #####################################
 
 def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
-	# create output folder
-	# if the folder doesn't exist, create it
-	if not os.path.exists('output_csv_f'):
-		os.makedirs('output_csv_f')
-
 	# get the sheet data from the Excel file
 	sheetData = excelFile[sheetItem] # where "excelFile" is the workbook, where "sheetItem" is a string, the name of the sheet
 	logging.debug('sheetData is:  ')
 	logging.debug(sheetData)
 
+	# create output folder
+	# if the folder doesn't exist, create it
+	if not os.path.exists('output_csv_f'):
+		os.makedirs('output_csv_f')
+	
 	# create the CSV filename from Excel filename and sheet title
 	# filenames of CSV should be `<excel filename>_<sheet title>.csv`
-	# csv_filename_is = filename + "_" + sheetItem.title + ".csv"
 	csv_filename_is = str(filename) + "_" + str(sheetData.title) + ".csv" # this version puts the final file in the `output_csv_f` folder
 	logging.debug('csv filename to use:  %s' % (csv_filename_is))
 	# create csv.writer object for this CSV file
