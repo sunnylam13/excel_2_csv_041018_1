@@ -32,12 +32,21 @@ logging.debug('The input folder targeted is:  %s' % (input_folder))
 #####################################
 
 def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
+	# create output folder
+	# if the folder doesn't exist, create it
+	if not os.path.exists('output_csv_f'):
+		os.makedirs('output_csv_f')
+
 	# create the CSV filename from Excel filename and sheet title
 	# filenames of CSV should be `<excel filename>_<sheet title>.csv`
-	csv_filename_is = filename + "_" + sheetItem.title + ".csv"
+	# csv_filename_is = filename + "_" + sheetItem.title + ".csv"
+	csv_filename_is = "./output_csv_f/" + filename + "_" + sheetItem.title + ".csv" # this version puts the final file in the `output_csv_f` folder
 	logging.debug('csv filename to use:  %s' % (csv_filename_is))
 	# create csv.writer object for this CSV file
 	output_csv_is = open(csv_filename_is,'w',newline='')
+	logging.debug('output_csv_is created')
+	outputWriter = csv.writer(output_csv_is)
+	logging.debug('outputWriter ready')
 	
 	# get the sheet data from the Excel file
 	sheetData = excelFile[sheetItem] # where "excelFile" is the workbook, where "sheetItem" is a string, the name of the sheet
@@ -55,7 +64,15 @@ def convert_sheet_to_csv_1(excelFile,sheetItem,filename):
 			logging.debug('cell_coordinate is:  %s' % (cell_coordinate) )
 			# append each cell's data to rowData
 			rowData.append(sheetData[cell_coordinate].value)
-	# write the rowData list to the CSV file
+			logging.debug('rowData to write is:  ')
+			logging.debug(rowData)
+		# write the rowData list to the CSV file
+		outputWriter.writerow(rowData)
+		logging.debug('rowData written')
+
+	# close `output_csv_is` file
+	output_csv_is.close()
+	logging.debug('output_csv_is closed')
 
 for file in os.listdir(input_folder):
 	# check that file is an Excel file
